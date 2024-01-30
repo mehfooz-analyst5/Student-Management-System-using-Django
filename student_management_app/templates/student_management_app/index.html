@@ -45,6 +45,11 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li>
+
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
+      </li>
+
     </ul>
 
     <!-- SEARCH FORM -->
@@ -172,7 +177,8 @@
           <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          {% comment %} <a href="#" class="d-block">Alexander Pierce</a> {% endcomment %}
+          <a href="#" class="d-block">{{request.user}}</a>
         </div>
       </div>
 
@@ -800,6 +806,7 @@
         </div>
         <!-- /.row -->
         <!-- Main row -->
+        
         <div class="row">
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
@@ -1317,6 +1324,7 @@
           </section>
           <!-- right col -->
         </div>
+
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
