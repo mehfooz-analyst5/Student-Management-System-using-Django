@@ -97,6 +97,9 @@ class Staff(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     objects=models.Manager()
 
+    def __str__(self):
+        return str(self.admin)
+
 class Course(models.Model):
     id=models.AutoField(primary_key=True)
     course_name=models.CharField(max_length=255)
