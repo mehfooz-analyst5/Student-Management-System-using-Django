@@ -107,14 +107,21 @@ class Course(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     objects=models.Manager()
 
+    def __str__(self):
+        return str(self.course_name)
+
+
 class Subject(models.Model):
     id=models.AutoField(primary_key=True)
     subject_name=models.CharField(max_length=255)
-    course_id=models.ForeignKey(Course,on_delete=models.CASCADE,default=1)
+    course_id=models.ForeignKey(Course, on_delete=models.CASCADE, default=1)
     staff_id=models.ForeignKey(User,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     objects=models.Manager()
+
+    def __str__(self):
+        return str(f'{self.subject_name} -- {self.staff_id.name}')
 
 class Student(models.Model):
     id=models.AutoField(primary_key=True)
@@ -128,6 +135,10 @@ class Student(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return str(f'{self.admin} - {self.course_id}')
+
 
 class Attendance(models.Model):
     id=models.AutoField(primary_key=True)
