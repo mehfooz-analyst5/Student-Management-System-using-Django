@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import User, Staff
+from .models import User, Staff, Course, Student, Subject
 
 
 # Create your views here.
@@ -15,8 +15,8 @@ def ShowPage(request):
 
 def ShowLoginPage(request):
 
-    if request.user.is_authenticated:
-        return redirect('home')
+    # if request.user.is_authenticated:
+    #     return redirect('home')
 
     if request.method=='POST':
         email = request.POST.get('email')
@@ -24,22 +24,32 @@ def ShowLoginPage(request):
         print(f"Email: {email}, Password: {password}")
         
         try:
-            user = get_user_model.objects.get(email=email)
+            user = User.objects.get(email__iexact=email)
             print(f"User: {user}")
 
         except:
             messages.error(request, "User doest not exist.")
 
-        user = authenticate(request, username=email, password=password)
-        print(f"Authenticated User: {user}")
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')
+        # user = authenticate(request, email=email, password=password)
+        # print(f"Authenticated User: {user}")
+        if user.password == password or authenticate(request, email=email, password=password):
+            
+            if user is not None:
+                login(request, user)
+
+                if user.user_type=='1':
+                    return redirect('hod-admin')
+                
+                elif user.user_type=='2':
+                    return HttpResponse('Staff Login')
+                
+                else:
+                    return HttpResponse('Student Login'+str(user.user_type))       
         else:
             messages.error(request, "Email & Password doest not exist.")
 
     return render(request, 'student_management_app/login.html')
+
 
 
 def Logoutpage(request):
@@ -84,3 +94,142 @@ def addStaff(request):
             return redirect('add-staff')
 
     return render(request, 'student_management_app/hod_template/add_staff.html')
+
+
+
+
+login_required(login_url='login')
+def addCourse(request):
+
+    if request.method=='POST':
+        course = request.POST.get('course')
+
+        try:
+            course = Course(course_name=course)
+            course.save()
+            messages.success(request, "Successfully Added Course.")
+            return redirect('add-course')
+
+        except :
+            print('going to except')
+            messages.error(request, "Failed to add Course.")
+            return redirect('add-course')
+
+    return render(request, 'student_management_app/hod_template/add_course.html')
+
+
+
+login_required(login_url='login')
+def addStudent(request):
+    courses =  Course.objects.all()
+    if request.method=='POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        address = request.POST.get('address')
+        course = request.POST.get('course')
+        gender = request.POST.get('sex')
+        session_start = request.POST.get('session_start')
+        session_end = request.POST.get('session_end')
+
+
+        try:
+            user = User.objects.create(name=name, email=email, password=password, user_type=3)
+            user.student.address=address
+            course = Course.objects.get(id=course)
+            user.student.course_id=course
+            user.student.session_start_year=session_start
+            user.student.session_end_year=session_end
+            user.student.gender=gender
+            user.student.profile_pic=""
+            user.save()
+            messages.success(request, "Successfully Added Student .")
+            return redirect('add-student')
+
+        except :
+            print('going to except')
+            messages.error(request, "Failed to add Student.")
+            return redirect('add-student')
+
+    return render(request, 'student_management_app/hod_template/add_student.html', {'courses':courses})
+
+
+
+login_required(login_url='login')
+def addSubject(request):
+    courses =  Course.objects.all()
+    staff = User.objects.filter(user_type=2)
+
+    if request.method=='POST':
+        subject = request.POST.get('subject')
+
+        course_id = request.POST.get('course')
+        course = Course.objects.get(id=course_id)
+
+        staff_id = request.POST.get('staff')
+        staff = User.objects.get(id=staff_id)
+
+        print(f'Details : {subject}, {course}, {staff}')
+
+        try:
+            subject = Subject(subject_name=subject, course_id=course, staff_id=staff)
+            subject.save()
+            messages.success(request, "Successfully Added Subject.")
+            return redirect('add-subject')
+
+        except :
+            print('going to except')
+            messages.error(request, "Failed to add Subject.")
+            return redirect('add-subject')
+        
+    context = {
+        'courses' : courses,
+        'staff' : staff,
+    }
+
+
+    return render(request, 'student_management_app/hod_template/add_subject.html', context)
+
+
+
+# Create your views here.
+login_required(login_url='login')
+def manageStaff(request):
+    staffs = Staff.objects.all()
+    context = {
+        'staffs' : staffs,
+        }
+    return render(request, 'student_management_app/hod_template/manage_staff.html', context)
+
+
+
+# Create your views here.
+login_required(login_url='login')
+def manageStudent(request):
+    students = Student.objects.all()
+    context = {
+        'students' : students,
+        }
+    return render(request, 'student_management_app/hod_template/manage-student.html', context)
+
+
+# Create your views here.
+login_required(login_url='login')
+def manageCourse(request):
+    courses = Course.objects.all()
+    context = {
+        'courses' : courses,
+        }
+    return render(request, 'student_management_app/hod_template/manage_course.html', context)
+
+
+# Create your views here.
+login_required(login_url='login')
+def manageSubject(request):
+    subjects = Subject.objects.all()
+    context = {
+        'subjects' : subjects,
+        }
+    return render(request, 'student_management_app/hod_template/manage_subject.html', context)
+
+

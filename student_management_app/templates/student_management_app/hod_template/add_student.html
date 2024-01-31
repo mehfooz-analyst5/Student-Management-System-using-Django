@@ -1,0 +1,131 @@
+{% extends 'student_management_app/hod_template/base_template.html' %}
+{% load static %}
+
+{% block title %}
+     Add Student 
+{% endblock title %}
+
+{% block page-title %}
+    Add Student
+{% endblock page-title %}
+
+{% block custom_css %}
+    
+{% endblock custom_css %}
+
+
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class='row'>
+                
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h3 class="card-title"> Add Student</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <form role="form" method='POST' action=''>
+                        {% csrf_token %}
+
+                        <div class="card-body">
+
+                          <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" required="true" name='name' placeholder="Full Name">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Email address</label>
+                            <input type="email" class="form-control" name='email' required="true"  placeholder="Enter Email">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name='password' required="true"  placeholder="Password">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Address</label>
+                            <input type="textarea" class="form-control" name='address' required="true"  placeholder="Address">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Course</label>
+                            <select class="form-control" name='course' required="true"> 
+                                
+                                {% for course in courses %}
+                                    <option value="{{course.id}}">{{course.course_name}}</option>
+                                {% endfor %}
+                                    
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Gender</label>
+                            <select class="form-control" name='sex' required="true"> 
+                                
+                                <option>Male</option>
+                                <option>Female</option>
+
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Session Start</label>
+                            <input type="date" class="form-control" name='session_start' required="true"  placeholder="Session Start Year">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Session End</label>
+                            <input type="date" class="form-control" name='session_end' required="true"  placeholder="Session End Year">
+                          </div>
+
+
+
+                          <div class="form-group">
+                            {% if messages %}
+                                {% for message in messages %}
+
+                                    {% if message.tags == 'error' %}
+                                        <div class='alert alert-danger'>{{message}}</div> 
+                                    {% endif %}
+
+                                    {% if message.tags == 'success' %}
+                                        <div class='alert alert-success'>{{message}}</div> 
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+                          </div>
+
+
+                        </div>
+
+
+                        <!-- /.card-body -->
+        
+                        <div class="card-footer">
+                          <button type="submit" class="btn btn-primary">Add Staff</button>
+                        </div>
+
+                      </form>
+                    </div>
+                    <!-- /.card -->
+        
+        
+                  </div>
+            
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+
+
+{% block customjs %}
+  
+{% endblock customjs %}
