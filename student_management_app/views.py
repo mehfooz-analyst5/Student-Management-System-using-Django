@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import User, Staff, Course, Student, Subject
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -233,3 +234,86 @@ def manageSubject(request):
     return render(request, 'student_management_app/hod_template/manage_subject.html', context)
 
 
+
+
+
+def updateStaff(request, staff_id):
+    staff = get_object_or_404(Staff, id=staff_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+
+        try:
+            user = User.objects.get(id=staff.admin.id)
+            user.name = name
+            user.email = email
+            user.save()
+
+            staff.address = address
+            staff.save()
+
+            messages.success(request, "Successfully Updated Staff.")
+            return redirect('/manage-staff')
+
+        except Exception as e:
+            print('Exception:', str(e))
+            messages.error(request, "Failed to Update Staff.")
+            return redirect('/update-staff/' + str(staff_id))
+        
+
+    context = {'staff': staff}
+
+    return render(request, 'student_management_app/hod_template/update_staff.html', context)
+
+
+@login_required(login_url='login')
+def updateStudent(request, student_id):
+    courses = Course.objects.all()
+    student = get_object_or_404(Student, id=student_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        course_id = request.POST.get('course')
+        gender = request.POST.get('sex')
+        session_start = request.POST.get('session_start')
+        session_end = request.POST.get('session_end')
+        print('Details:', name, email, address, course_id, gender, session_start, session_end)
+
+        try:
+            user = User.objects.get(id=student.admin.id)
+            print(user)
+            user.name = name
+            user.email = email
+            user.save()
+            print('User Updated', user.name, user.email)
+
+            student.address = address
+            student.session_start_year = session_start
+            student.session_end_year = session_end
+            student.gender = gender
+            student.save()
+            print('Student Updated', student.address, student.session_start_year, student.session_end_year, student.gender)
+
+            course = get_object_or_404(Course, id=course_id)
+            student.course_id = course
+            student.save()
+            print('Student Updated', student.course_id)
+
+            messages.success(request, "Successfully Updated Student.")
+            return redirect('/update-student/' + str(student_id))
+
+        except Exception as e:
+            print('Exception:', str(e))
+            messages.error(request, "Failed to Update Student.")
+            return redirect('/update-student/' + str(student_id))
+
+    context = {
+        'student': student,
+        'courses': courses,
+    }
+
+    return render(request, 'student_management_app/hod_template/update-student.html', context)
