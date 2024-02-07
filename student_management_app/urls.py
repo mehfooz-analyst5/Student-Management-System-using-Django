@@ -16,6 +16,7 @@ urlpatterns = [
 
      path('add-staff/', views.addStaff, name='add-staff'),
      path('manage-staff/', views.manageStaff, name='manage-staff'),
+     path('update-staff/<str:staff_id>/', views.updateStaff, name='update-staff'),
 
 
      path('add-course/', views.addCourse, name='add-course'),
@@ -23,6 +24,7 @@ urlpatterns = [
 
      path('add-student/', views.addStudent, name='add-student'),
      path('manage-student/', views.manageStudent, name='manage-student'),
+     path('update-student/<str:student_id>/', views.updateStudent, name='update-student'),
 
      path('add-subject/', views.addSubject, name='add-subject'),
      path('manage-subject/', views.manageSubject, name='manage-subject'),

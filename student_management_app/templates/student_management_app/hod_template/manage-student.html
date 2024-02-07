@@ -73,7 +73,7 @@
                         <td>{{student.updated_at}}</td>
                         <td>{{student.created_at}}</td>
 
-                        <td><a href='' class='btn btn-warning btn-sm'>Edit</td>
+                        <td><a href="{% url 'update-student' student.id %}" class='btn btn-warning btn-sm'>Edit</td>
 
                       </tr>
 
