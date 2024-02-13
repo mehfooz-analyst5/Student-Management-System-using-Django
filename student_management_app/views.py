@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import User, Staff, Course, Student, Subject
 from django.shortcuts import get_object_or_404
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your views here.
@@ -133,6 +134,12 @@ def addStudent(request):
         session_start = request.POST.get('session_start')
         session_end = request.POST.get('session_end')
 
+        profile_pic = request.FILES['profile_pic']
+        fs = FileSystemStorage()
+        filename = fs.save(profile_pic.name, profile_pic)
+        profile_pic_url = fs.url(filename)
+        print('Profile Pic:', profile_pic_url)
+
 
         try:
             user = User.objects.create(name=name, email=email, password=password, user_type=3)
@@ -142,7 +149,7 @@ def addStudent(request):
             user.student.session_start_year=session_start
             user.student.session_end_year=session_end
             user.student.gender=gender
-            user.student.profile_pic=""
+            user.student.profile_pic=profile_pic_url
             user.save()
             messages.success(request, "Successfully Added Student .")
             return redirect('add-student')
@@ -281,7 +288,11 @@ def updateStudent(request, student_id):
         gender = request.POST.get('sex')
         session_start = request.POST.get('session_start')
         session_end = request.POST.get('session_end')
-        print('Details:', name, email, address, course_id, gender, session_start, session_end)
+
+        profile_pic = request.FILES['profile_pic']
+        fs = FileSystemStorage()
+        filename = fs.save(profile_pic.name, profile_pic)
+        profile_pic_url = fs.url(filename)
 
         try:
             user = User.objects.get(id=student.admin.id)
@@ -289,7 +300,6 @@ def updateStudent(request, student_id):
             user.name = name
             user.email = email
             user.save()
-            print('User Updated', user.name, user.email)
 
             student.address = address
             student.session_start_year = session_start
