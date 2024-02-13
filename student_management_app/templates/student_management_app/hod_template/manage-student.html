@@ -65,7 +65,9 @@
                         <td>{{student.admin.name}}</td>
                         <td>{{student.admin.email}}</td>
                         <td>{{student.gender}}</td>
-                        <td>{{student.profile_pic}}</td>
+                        <td>
+                          <img src="{{ student.profile_pic }}" alt="Profile" class="img-circle" style="width: 90px; height: 100px;">
+                        </td>
                         <td>{{student.course_id}}</td>
                         <td>{{student.session_start_year}}</td>
                         <td>{{student.session_end_year}}</td>
