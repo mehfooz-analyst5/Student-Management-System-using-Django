@@ -43,10 +43,10 @@ def ShowLoginPage(request):
                     return redirect('hod-admin')
                 
                 elif user.user_type=='2':
-                    return HttpResponse('Staff Login')
+                    return redirect('staff-admin')
                 
                 else:
-                    return HttpResponse('Student Login'+str(user.user_type))       
+                    return redirect('student-home')      
         else:
             messages.error(request, "Email & Password doest not exist.")
 
@@ -288,11 +288,14 @@ def updateStudent(request, student_id):
         gender = request.POST.get('sex')
         session_start = request.POST.get('session_start')
         session_end = request.POST.get('session_end')
-
-        profile_pic = request.FILES['profile_pic']
-        fs = FileSystemStorage()
-        filename = fs.save(profile_pic.name, profile_pic)
-        profile_pic_url = fs.url(filename)
+        
+        if request.FILES.get('profile_pic', False):
+            profile_pic = request.FILES['profile_pic']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+        else:
+            profile_pic_url = None
 
         try:
             user = User.objects.get(id=student.admin.id)
@@ -305,6 +308,9 @@ def updateStudent(request, student_id):
             student.session_start_year = session_start
             student.session_end_year = session_end
             student.gender = gender
+
+            if profile_pic_url != None:
+                student.profile_pic = profile_pic_url
             student.save()
             print('Student Updated', student.address, student.session_start_year, student.session_end_year, student.gender)
 
@@ -327,3 +333,69 @@ def updateStudent(request, student_id):
     }
 
     return render(request, 'student_management_app/hod_template/update-student.html', context)
+
+
+
+
+def updateCourse(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.method == 'POST':
+        course_name = request.POST.get('course')
+        course.course_name = course_name
+        course.save()
+        messages.success(request, "Successfully Updated Course.")
+        return redirect('/update-course/' + str(course_id))
+
+    return render(request, 'student_management_app/hod_template/update-course.html', {'course':course})
+
+
+
+
+def updateSubject(request, subject_id):
+    courses = Course.objects.all()
+    subject = get_object_or_404(Subject, id=subject_id)
+    staff = User.objects.all()
+
+    if request.method == 'POST':
+        subject_name = request.POST.get('subject')
+        course_id = request.POST.get('course')
+        staff_id = request.POST.get('staff')
+
+        course = get_object_or_404(Course, id=course_id)
+        staff = get_object_or_404(User, id=staff_id)
+
+        subject.subject_name = subject_name
+        subject.course_id = course
+        subject.staff_id = staff
+        subject.save()
+        messages.success(request, "Successfully Updated Subject.")
+        return redirect('/update-subject/' + str(subject_id))
+
+    context = {
+        'courses': courses,
+        'subject': subject,
+        'staff': staff
+    }
+
+    return render(request, 'student_management_app/hod_template/update-subject.html', context)
+
+
+
+
+
+
+#---------------- Staff Views ------------------------------
+
+login_required(login_url='login')
+def staffAdmin(request):
+    return render(request, 'student_management_app/staff_template/home-content.html')
+
+
+
+
+#---------------- Student Views ------------------------------
+
+login_required(login_url='login')
+def studentHome(request):
+    return render(request, 'student_management_app/student_template/home-content.html')

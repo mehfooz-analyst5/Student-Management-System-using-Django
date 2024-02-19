@@ -62,6 +62,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
+    'student_management_app.LoginMiddlewareCheck.LoginCheckMiddleWares',
+
     # 'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
