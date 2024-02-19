@@ -5,7 +5,7 @@
     <a href="index3.html" class="brand-link">
       <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">SMS - Platform</span>
     </a>
 
     <!-- Sidebar -->
@@ -28,7 +28,8 @@
                with font-awesome or any other icon font library -->
          
           <li class="nav-item">
-            <a href="/hod-admin" class="nav-link active">
+            {% url 'hod-admin' as hod_admin %}
+            <a href="/hod-admin" class="nav-link {% if request.path == hod_admin %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Dashboard
@@ -37,81 +38,81 @@
           </li>
 
           <li class="nav-item">
-            <a href="/add-staff" class="nav-link">
+            {% url 'add-staff' as add_staff %}
+            <a href="/add-staff" class="nav-link {% if request.path == add_staff %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Add Staff
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/manage-staff" class="nav-link">
+            {% url 'manage-staff' as manage_staff %}
+            <a href="/manage-staff" class="nav-link {% if request.path == manage_staff %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Manage Staff
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/add-student" class="nav-link">
+            {% url 'add-student' as add_student %}
+            <a href="/add-student" class="nav-link {% if request.path == add_student %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Add Student
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/manage-student" class="nav-link">
+            {% url 'manage-student' as manage_student %}
+            <a href="/manage-student" class="nav-link {% if request.path == manage_student %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Manage Student
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/add-course" class="nav-link">
+            {% url 'add-course' as add_course %}
+            <a href="/add-course" class="nav-link {% if request.path == add_course %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Add Course
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/manage-course" class="nav-link">
+            {% url 'manage-course' as manage_course %}
+            <a href="/manage-course" class="nav-link {% if request.path == manage_course %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Manage Course
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/add-subject" class="nav-link">
+            {% url 'add-subject' as add_subject %}
+            <a href="/add-subject" class="nav-link {% if request.path == add_subject %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Add Subject
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="/manage-subject" class="nav-link">
+            {% url 'manage-subject' as manage_subject %}
+            <a href="/manage-subject" class="nav-link {% if request.path == manage_subject %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Manage Subject
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -121,7 +122,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 View Attendance
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -131,7 +131,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Student Feedback
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -141,7 +140,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Staff Feedback
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -151,7 +149,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Student Leave
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -161,7 +158,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Staff Leave
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>

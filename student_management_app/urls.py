@@ -10,7 +10,9 @@ urlpatterns = [
      path('login/', views.ShowLoginPage, name='login'),
      path('logout/', views.Logoutpage, name='logout'),
 
-     #-------------------- HOD Views ---------------
+
+
+     #-------------------------------- HOD Views ----------------------
 
      path('hod-admin/', views.HodPageView, name='hod-admin'),
 
@@ -21,6 +23,7 @@ urlpatterns = [
 
      path('add-course/', views.addCourse, name='add-course'),
      path('manage-course/', views.manageCourse, name='manage-course'),
+     path('update-course/<str:course_id>/', views.updateCourse, name='update-course'),
 
      path('add-student/', views.addStudent, name='add-student'),
      path('manage-student/', views.manageStudent, name='manage-student'),
@@ -28,4 +31,15 @@ urlpatterns = [
 
      path('add-subject/', views.addSubject, name='add-subject'),
      path('manage-subject/', views.manageSubject, name='manage-subject'),
+     path('update-subject/<str:subject_id>/', views.updateSubject, name='update-subject'),
+
+
+
+     #-------------------------------- Staff Views ------------------------------------------
+     path('staff-admin/', views.staffAdmin, name='staff-admin'),
+
+
+
+     #-------------------------------- Student Views ------------------------------------------
+     path('student-home/', views.studentHome, name='student-home'),
 ] 

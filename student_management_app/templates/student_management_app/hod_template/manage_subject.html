@@ -60,7 +60,7 @@
                         <td>{{subject.course_id.course_name}}</td>
                         <td>{{subject.staff_id.name}}</td>
 
-                        <td><a href='' class='btn btn-warning btn-sm'>Edit</td>
+                        <td><a href="{% url 'update-subject' subject.id %}" class='btn btn-warning btn-sm'>Edit</td>
 
                       </tr>
 
