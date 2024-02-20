@@ -37,6 +37,7 @@ urlpatterns = [
 
      #-------------------------------- Staff Views ------------------------------------------
      path('staff-admin/', views.staffAdmin, name='staff-admin'),
+     path('staff-attendace/', views.takeAttendance, name='staff-attendance'),
 
 
 
