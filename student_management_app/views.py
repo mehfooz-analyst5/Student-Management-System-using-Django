@@ -387,9 +387,11 @@ def updateSubject(request, subject_id):
 
 #---------------- Staff Views ------------------------------
 
-login_required(login_url='login')
 def staffAdmin(request):
     return render(request, 'student_management_app/staff_template/home-content.html')
+
+def takeAttendance(request):
+    return render(request, 'student_management_app/staff_template/staff_attendance.html')
 
 
 

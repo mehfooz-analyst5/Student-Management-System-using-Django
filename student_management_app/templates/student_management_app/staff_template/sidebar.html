@@ -38,10 +38,11 @@
           </li>
 
           <li class="nav-item">
-            <a href="" class="nav-link active ">
+            {% url 'staff-attendance' as staff_attendace %}
+            <a href="{% url 'staff-attendance' %}" class="nav-link {% if request.path == staff_attendace %} active {% endif %} ">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Add Staff
+                Take Attendance
               </p>
             </a>
           </li>
